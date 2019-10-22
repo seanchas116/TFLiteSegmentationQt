@@ -1,5 +1,6 @@
 #include "MainWindow.hpp"
 #include <QApplication>
+#include <QtDebug>
 #include <tensorflow/lite/interpreter.h>
 #include <tensorflow/lite/kernels/register.h>
 #include <tensorflow/lite/model.h>
@@ -12,4 +13,6 @@ MainWindow::MainWindow() {
 
     tflite::ops::builtin::BuiltinOpResolver resolver;
     tflite::InterpreterBuilder(*model.get(), resolver)(&interpreter);
+
+    interpreter->AllocateTensors();
 }
