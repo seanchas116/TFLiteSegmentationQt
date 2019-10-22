@@ -45,6 +45,7 @@ MainWindow::MainWindow() {
         int inputHeight = inputTensor->dims->data[2];
         int inputChannelCount = inputTensor->dims->data[3];
 
+        qDebug() << "input type:" << inputTensor->type;
         qDebug() << "input batch size:" << inputBatchSize;
         qDebug() << "input width:" << inputWidth;
         qDebug() << "input height:" << inputHeight;
@@ -68,5 +69,20 @@ MainWindow::~MainWindow() {
 }
 
 void MainWindow::loadImage(const QImage &image) {
+    auto inputTensor = _interpreter->tensor(_interpreter->inputs()[0]);
+    int inputWidth = inputTensor->dims->data[1];
+    int inputHeight = inputTensor->dims->data[2];
+
+    auto tensorData = _interpreter->typed_input_tensor<float>(_interpreter->inputs()[0]);
+
+    auto inputImage = image.convertToFormat(QImage::Format_RGB888).scaled(inputWidth, inputHeight);
+    float *dst = tensorData;
+    for (int y = 0; y < inputHeight; ++y) {
+        uint8_t *src = inputImage.scanLine(y);
+        for (int x = 0; x < inputWidth * 3; ++x) {
+            *dst++ = *src++ / 255.f;
+        }
+    }
+
     _imageLabel->setPixmap(QPixmap::fromImage(image));
 }
