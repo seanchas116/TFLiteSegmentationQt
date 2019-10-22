@@ -66,7 +66,9 @@ MainWindow::MainWindow() {
         tflite::ops::builtin::BuiltinOpResolver resolver;
         tflite::InterpreterBuilder(*model.get(), resolver)(&_interpreter);
 
-        _interpreter->AllocateTensors();
+        if (_interpreter->AllocateTensors() != kTfLiteOk) {
+            qDebug() << "Error AllocateTensors";
+        }
 
         auto inputTensor = _interpreter->tensor(_interpreter->inputs()[0]);
         int inputBatchSize = inputTensor->dims->data[0];
@@ -114,8 +116,8 @@ void MainWindow::loadImage(const QImage &image) {
         }
     }
 
-    if (_interpreter->Invoke() == kTfLiteError) {
-        qDebug() << "ERROR";
+    if (_interpreter->Invoke() != kTfLiteOk) {
+        qDebug() << "Error Invoke";
     }
 
     auto outputData = _interpreter->typed_tensor<float>(_interpreter->outputs()[0]);
