@@ -114,7 +114,9 @@ void MainWindow::loadImage(const QImage &image) {
         }
     }
 
-    _interpreter->Invoke();
+    if (_interpreter->Invoke() == kTfLiteError) {
+        qDebug() << "ERROR";
+    }
 
     auto outputData = _interpreter->typed_tensor<float>(_interpreter->outputs()[0]);
     QImage outputImage(inputWidth, inputHeight, QImage::Format_RGB888);
