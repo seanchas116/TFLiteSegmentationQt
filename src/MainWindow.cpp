@@ -102,8 +102,9 @@ void MainWindow::loadImage(const QImage &image) {
     int inputWidth = inputTensor->dims->data[1];
     int inputHeight = inputTensor->dims->data[2];
 
-    auto tensorData = _interpreter->typed_input_tensor<float>(_interpreter->inputs()[0]);
+    auto tensorData = _interpreter->typed_tensor<float>(_interpreter->inputs()[0]);
 
+    // TODO: transpose?
     auto inputImage = image.convertToFormat(QImage::Format_RGB888).scaled(inputWidth, inputHeight);
     float *dst = tensorData;
     for (int y = 0; y < inputHeight; ++y) {
@@ -115,5 +116,18 @@ void MainWindow::loadImage(const QImage &image) {
 
     _interpreter->Invoke();
 
-    _imageLabel->setPixmap(QPixmap::fromImage(image));
+    auto outputData = _interpreter->typed_tensor<float>(_interpreter->outputs()[0]);
+    QImage outputImage(inputWidth, inputHeight, QImage::Format_RGB888);
+    for (int y = 0; y < inputHeight; ++y) {
+        for (int x = 0; x < inputWidth; ++x) {
+            const int classCount = 21;
+            int index = std::max_element(outputData, outputData + classCount) - outputData;
+            outputData += classCount;
+            outputImage.setPixel(x, y, legendColorList.at(index));
+        }
+    }
+
+    //_imageLabel->setPixmap(QPixmap::fromImage(image));
+    _imageLabel->setPixmap(QPixmap::fromImage(outputImage));
+    //_imageLabel->setPixmap(QPixmap::fromImage(inputImage));
 }
