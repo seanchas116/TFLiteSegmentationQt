@@ -84,5 +84,7 @@ void MainWindow::loadImage(const QImage &image) {
         }
     }
 
+    _interpreter->Invoke();
+
     _imageLabel->setPixmap(QPixmap::fromImage(image));
 }
