@@ -11,11 +11,11 @@
 MainWindow::MainWindow() {
     // Build UI
     {
-        auto label = new QLabel();
-        setCentralWidget(label);
+        _imageLabel = new QLabel();
+        setCentralWidget(_imageLabel);
 
         auto toolBar = new QToolBar();
-        toolBar->addAction(tr("Load Image..."), this, [this, label] {
+        toolBar->addAction(tr("Load Image..."), this, [this] {
             auto path = QFileDialog::getOpenFileName(this, "Open Image", "", "Image Files (*.png *.jpg *.bmp)");
             if (path.isEmpty()) {
                 return;
@@ -24,7 +24,7 @@ MainWindow::MainWindow() {
             QFile file(path);
             file.open(QIODevice::ReadOnly);
             auto image = QImage::fromData(file.readAll());
-            label->setPixmap(QPixmap::fromImage(image));
+            loadImage(image);
         });
         addToolBar(toolBar);
     }
@@ -65,4 +65,8 @@ MainWindow::MainWindow() {
 }
 
 MainWindow::~MainWindow() {
+}
+
+void MainWindow::loadImage(const QImage &image) {
+    _imageLabel->setPixmap(QPixmap::fromImage(image));
 }
