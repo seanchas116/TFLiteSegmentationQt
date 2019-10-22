@@ -17,8 +17,14 @@ cd path/to/tensorflow
 * Copy .a and .h
 
 ```
+# Copy TensorFlow Lite headers
 cd path/to/tensorflow/tensorflow/lite
-gcp --parents **/*.h /path/to/tflite-qt-app/vendor/tensorflow-lite/include
-cp tools/make/gen/osx_x86_64/lib/libtensorflow-lite.a /path/to/tflite-qt-app/vendor/tensorflow-lite/osx_x86_64/lib # Platform name may be different
+gcp --parents **/*.h /path/to/tflite-qt-app/vendor/tensorflow-lite/include/tensorflow/lite
+
+# Copy flatbuffers headers
+cp -r tools/make/downloads/flatbuffers/include/flatbuffers /path/to/tflite-qt-app/vendor/tensorflow-lite/include
+
+# Copy libtensorflow-lite.a (platform name may vary)
+cp tools/make/gen/osx_x86_64/lib/libtensorflow-lite.a /path/to/tflite-qt-app/vendor/tensorflow-lite/osx_x86_64/lib
 ```
 
