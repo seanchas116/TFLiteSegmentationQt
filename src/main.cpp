@@ -1,9 +1,12 @@
 #include <QApplication>
 #include <QWidget>
 #include <tensorflow/lite/interpreter.h>
+#include <tensorflow/lite/model.h>
 
 int main(int argc, char *argv[]) {
     QApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+
+    auto model = tflite::FlatBufferModel::BuildFromFile("path/to/model");
 
     QApplication app(argc, argv);
     QWidget window;
