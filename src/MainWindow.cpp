@@ -15,4 +15,15 @@ MainWindow::MainWindow() {
     tflite::InterpreterBuilder(*model.get(), resolver)(&interpreter);
 
     interpreter->AllocateTensors();
+
+    auto inputTensor = interpreter->tensor(interpreter->inputs()[0]);
+    int batchSize = inputTensor->dims->data[0];
+    int imageWidth = inputTensor->dims->data[1];
+    int imageHeight = inputTensor->dims->data[2];
+    int imageChannelCount = inputTensor->dims->data[3];
+
+    qDebug() << "batch size:" << batchSize;
+    qDebug() << "width:" << imageWidth;
+    qDebug() << "height:" << imageHeight;
+    qDebug() << "channel count:" << imageChannelCount;
 }
