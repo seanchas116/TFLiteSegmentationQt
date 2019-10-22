@@ -17,13 +17,13 @@ MainWindow::MainWindow() {
     interpreter->AllocateTensors();
 
     auto inputTensor = interpreter->tensor(interpreter->inputs()[0]);
-    int batchSize = inputTensor->dims->data[0];
-    int imageWidth = inputTensor->dims->data[1];
-    int imageHeight = inputTensor->dims->data[2];
-    int imageChannelCount = inputTensor->dims->data[3];
+    int inputBatchSize = inputTensor->dims->data[0];
+    int inputWdith = inputTensor->dims->data[1];
+    int inputHeight = inputTensor->dims->data[2];
+    int inputChannelCount = inputTensor->dims->data[3];
 
-    qDebug() << "batch size:" << batchSize;
-    qDebug() << "width:" << imageWidth;
-    qDebug() << "height:" << imageHeight;
-    qDebug() << "channel count:" << imageChannelCount;
+    qDebug() << "input batch size:" << inputBatchSize;
+    qDebug() << "input width:" << inputWdith;
+    qDebug() << "input height:" << inputHeight;
+    qDebug() << "input channel count:" << inputChannelCount;
 }
