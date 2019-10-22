@@ -3,7 +3,7 @@ Use TensorFlow lite in Qt desktop app
 
 ## Install tensorflow-lite
 
-This repo already includes tensorflow-lite build, but if you want to use tensorflow-lite built yourself do the following:
+This repo already includes tensorflow-lite build, but if you want to use tensorflow-lite built by yourself do the following:
 
 * Clone [tensorflow repo](https://github.com/tensorflow/tensorflow)
 * Build tensorflow-lite for desktop
