@@ -1,5 +1,5 @@
-# tflite-qt-app
-Use TensorFlow lite in Qt desktop app
+# TFLiteSegmentationQt
+Run TensorFlow Lite image segmentation in Qt desktop app
 
 ## Install tensorflow-lite
 
