@@ -9,55 +9,60 @@
 #include <tensorflow/lite/model.h>
 
 MainWindow::MainWindow() {
-    auto label = new QLabel();
-    setCentralWidget(label);
+    // Build UI
+    {
+        auto label = new QLabel();
+        setCentralWidget(label);
 
-    auto toolBar = new QToolBar();
-    toolBar->addAction(tr("Load Image..."), this, [this, label] {
-        auto path = QFileDialog::getOpenFileName(this, "Open Image", "", "Image Files (*.png *.jpg *.bmp)");
-        if (path.isEmpty()) {
-            return;
-        }
+        auto toolBar = new QToolBar();
+        toolBar->addAction(tr("Load Image..."), this, [this, label] {
+            auto path = QFileDialog::getOpenFileName(this, "Open Image", "", "Image Files (*.png *.jpg *.bmp)");
+            if (path.isEmpty()) {
+                return;
+            }
 
-        QFile file(path);
-        file.open(QIODevice::ReadOnly);
-        auto image = QImage::fromData(file.readAll());
-        label->setPixmap(QPixmap::fromImage(image));
-    });
-    addToolBar(toolBar);
+            QFile file(path);
+            file.open(QIODevice::ReadOnly);
+            auto image = QImage::fromData(file.readAll());
+            label->setPixmap(QPixmap::fromImage(image));
+        });
+        addToolBar(toolBar);
+    }
 
     // Load model
+    {
+        auto modelPath = QApplication::applicationDirPath() + "/resources/deeplabv3_257_mv_gpu.tflite";
+        auto model = tflite::FlatBufferModel::BuildFromFile(modelPath.toUtf8().data());
 
-    auto modelPath = QApplication::applicationDirPath() + "/resources/deeplabv3_257_mv_gpu.tflite";
-    auto model = tflite::FlatBufferModel::BuildFromFile(modelPath.toUtf8().data());
+        tflite::ops::builtin::BuiltinOpResolver resolver;
+        tflite::InterpreterBuilder(*model.get(), resolver)(&_interpreter);
 
-    std::unique_ptr<tflite::Interpreter> interpreter;
+        _interpreter->AllocateTensors();
 
-    tflite::ops::builtin::BuiltinOpResolver resolver;
-    tflite::InterpreterBuilder(*model.get(), resolver)(&interpreter);
+        auto inputTensor = _interpreter->tensor(_interpreter->inputs()[0]);
+        int inputBatchSize = inputTensor->dims->data[0];
+        int inputWidth = inputTensor->dims->data[1];
+        int inputHeight = inputTensor->dims->data[2];
+        int inputChannelCount = inputTensor->dims->data[3];
 
-    interpreter->AllocateTensors();
+        qDebug() << "input batch size:" << inputBatchSize;
+        qDebug() << "input width:" << inputWidth;
+        qDebug() << "input height:" << inputHeight;
+        qDebug() << "input channel count:" << inputChannelCount;
 
-    auto inputTensor = interpreter->tensor(interpreter->inputs()[0]);
-    int inputBatchSize = inputTensor->dims->data[0];
-    int inputWidth = inputTensor->dims->data[1];
-    int inputHeight = inputTensor->dims->data[2];
-    int inputChannelCount = inputTensor->dims->data[3];
+        auto outputTensor = _interpreter->tensor(_interpreter->outputs()[0]);
+        int outputBatchSize = outputTensor->dims->data[0];
+        int outputWidth = outputTensor->dims->data[1];
+        int outputHeight = outputTensor->dims->data[2];
+        int outputChannelCount = outputTensor->dims->data[3];
 
-    qDebug() << "input batch size:" << inputBatchSize;
-    qDebug() << "input width:" << inputWidth;
-    qDebug() << "input height:" << inputHeight;
-    qDebug() << "input channel count:" << inputChannelCount;
+        qDebug() << outputTensor->dims->size;
+        qDebug() << "output batch size:" << outputBatchSize;
+        qDebug() << "output width:" << outputWidth;
+        qDebug() << "output height:" << outputHeight;
+        qDebug() << "output channel count:" << outputChannelCount;
+    }
+}
 
-    auto outputTensor = interpreter->tensor(interpreter->outputs()[0]);
-    int outputBatchSize = outputTensor->dims->data[0];
-    int outputWidth = outputTensor->dims->data[1];
-    int outputHeight = outputTensor->dims->data[2];
-    int outputChannelCount = outputTensor->dims->data[3];
-
-    qDebug() << outputTensor->dims->size;
-    qDebug() << "output batch size:" << outputBatchSize;
-    qDebug() << "output width:" << outputWidth;
-    qDebug() << "output height:" << outputHeight;
-    qDebug() << "output channel count:" << outputChannelCount;
+MainWindow::~MainWindow() {
 }
