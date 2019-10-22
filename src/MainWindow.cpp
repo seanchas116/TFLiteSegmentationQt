@@ -86,7 +86,7 @@ MainWindow::MainWindow() {
         int outputHeight = outputTensor->dims->data[2];
         int outputChannelCount = outputTensor->dims->data[3];
 
-        qDebug() << outputTensor->dims->size;
+        qDebug() << "output type:" << outputTensor->type;
         qDebug() << "output batch size:" << outputBatchSize;
         qDebug() << "output width:" << outputWidth;
         qDebug() << "output height:" << outputHeight;
