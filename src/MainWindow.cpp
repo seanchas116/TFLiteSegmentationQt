@@ -1,11 +1,33 @@
 #include "MainWindow.hpp"
 #include <QApplication>
+#include <QFileDialog>
+#include <QLabel>
+#include <QToolBar>
 #include <QtDebug>
 #include <tensorflow/lite/interpreter.h>
 #include <tensorflow/lite/kernels/register.h>
 #include <tensorflow/lite/model.h>
 
 MainWindow::MainWindow() {
+    auto label = new QLabel();
+    setCentralWidget(label);
+
+    auto toolBar = new QToolBar();
+    toolBar->addAction(tr("Load Image..."), this, [this, label] {
+        auto path = QFileDialog::getOpenFileName(this, "Open Image", "", "Image Files (*.png *.jpg *.bmp)");
+        if (path.isEmpty()) {
+            return;
+        }
+
+        QFile file(path);
+        file.open(QIODevice::ReadOnly);
+        auto image = QImage::fromData(file.readAll());
+        label->setPixmap(QPixmap::fromImage(image));
+    });
+    addToolBar(toolBar);
+
+    // Load model
+
     auto modelPath = QApplication::applicationDirPath() + "/resources/deeplabv3_257_mv_gpu.tflite";
     auto model = tflite::FlatBufferModel::BuildFromFile(modelPath.toUtf8().data());
 
