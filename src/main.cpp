@@ -1,7 +1,8 @@
 #include <QApplication>
 #include <QWidget>
+#include <tensorflow/lite/interpreter.h>
 
-int main(int argc, char* argv[]) {
+int main(int argc, char *argv[]) {
     QApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 
     QApplication app(argc, argv);
