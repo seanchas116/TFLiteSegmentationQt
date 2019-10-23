@@ -55,44 +55,44 @@ double get_us(struct timeval t) { return (t.tv_sec * 1000000 + t.tv_usec); }
 using TfLiteDelegatePtr = tflite::Interpreter::TfLiteDelegatePtr;
 using TfLiteDelegatePtrMap = std::map<std::string, TfLiteDelegatePtr>;
 
-TfLiteDelegatePtr CreateGPUDelegate(Settings *s) {
-#if defined(__ANDROID__)
-    TfLiteGpuDelegateOptions options;
-    options.metadata = TfLiteGpuDelegateGetModelMetadata(s->model->GetModel());
-    if (s->allow_fp16) {
-        options.compile_options.precision_loss_allowed = 1;
-    } else {
-        options.compile_options.precision_loss_allowed = 0;
-    }
-    options.compile_options.preferred_gl_object_type =
-        TFLITE_GL_OBJECT_TYPE_FASTEST;
-    options.compile_options.dynamic_batch_enabled = 0;
+//TfLiteDelegatePtr CreateGPUDelegate(Settings *s) {
+//#if defined(__ANDROID__)
+//    TfLiteGpuDelegateOptions options;
+//    options.metadata = TfLiteGpuDelegateGetModelMetadata(s->model->GetModel());
+//    if (s->allow_fp16) {
+//        options.compile_options.precision_loss_allowed = 1;
+//    } else {
+//        options.compile_options.precision_loss_allowed = 0;
+//    }
+//    options.compile_options.preferred_gl_object_type =
+//        TFLITE_GL_OBJECT_TYPE_FASTEST;
+//    options.compile_options.dynamic_batch_enabled = 0;
 
-    return evaluation::CreateGPUDelegate(s->model, &options);
-#else
-    return evaluation::CreateGPUDelegate(s->model);
-#endif
-}
+//    return evaluation::CreateGPUDelegate(s->model, &options);
+//#else
+//    return evaluation::CreateGPUDelegate(s->model);
+//#endif
+//}
 
 TfLiteDelegatePtrMap GetDelegates(Settings *s) {
     TfLiteDelegatePtrMap delegates;
-    if (s->gl_backend) {
-        auto delegate = CreateGPUDelegate(s);
-        if (!delegate) {
-            LOG(INFO) << "GPU acceleration is unsupported on this platform.";
-        } else {
-            delegates.emplace("GPU", std::move(delegate));
-        }
-    }
+    //    if (s->gl_backend) {
+    //        auto delegate = CreateGPUDelegate(s);
+    //        if (!delegate) {
+    //            LOG(INFO) << "GPU acceleration is unsupported on this platform.";
+    //        } else {
+    //            delegates.emplace("GPU", std::move(delegate));
+    //        }
+    //    }
 
-    if (s->accel) {
-        auto delegate = evaluation::CreateNNAPIDelegate();
-        if (!delegate) {
-            LOG(INFO) << "NNAPI acceleration is unsupported on this platform.";
-        } else {
-            delegates.emplace("NNAPI", evaluation::CreateNNAPIDelegate());
-        }
-    }
+    //    if (s->accel) {
+    //        auto delegate = evaluation::CreateNNAPIDelegate();
+    //        if (!delegate) {
+    //            LOG(INFO) << "NNAPI acceleration is unsupported on this platform.";
+    //        } else {
+    //            delegates.emplace("NNAPI", evaluation::CreateNNAPIDelegate());
+    //        }
+    //    }
     return delegates;
 }
 
