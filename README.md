@@ -3,6 +3,10 @@ Run TensorFlow Lite image segmentation in Qt desktop app
 
 ![image](screenshot.png)
 
+## How to run
+
+Open `CMakeLists.txt` with Qt Creator, or build the project with cmake manually.
+
 ## Install tensorflow-lite
 
 This repo already includes tensorflow-lite build (v2.0.0), but if you want to use tensorflow-lite built by yourself do the following:
