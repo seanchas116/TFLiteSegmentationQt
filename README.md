@@ -1,6 +1,8 @@
 # TFLiteSegmentationQt
 Run TensorFlow Lite image segmentation in Qt desktop app
 
+![image](screenshot.png)
+
 ## Install tensorflow-lite
 
 This repo already includes tensorflow-lite build (v2.0.0), but if you want to use tensorflow-lite built by yourself do the following:
