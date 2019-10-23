@@ -2,6 +2,7 @@
 #include <QApplication>
 #include <QFileDialog>
 #include <QLabel>
+#include <QPainter>
 #include <QToolBar>
 #include <QtDebug>
 #include <tensorflow/lite/interpreter.h>
@@ -132,7 +133,12 @@ void MainWindow::loadImage(const QImage &image) {
         }
     }
 
+    QImage displayImage = inputImage;
+    QPainter painter(&displayImage);
+    painter.setOpacity(0.5);
+    painter.drawImage(displayImage.rect(), outputImage, outputImage.rect());
+
     //_imageLabel->setPixmap(QPixmap::fromImage(image));
-    _imageLabel->setPixmap(QPixmap::fromImage(outputImage));
+    _imageLabel->setPixmap(QPixmap::fromImage(displayImage));
     //_imageLabel->setPixmap(QPixmap::fromImage(inputImage));
 }
