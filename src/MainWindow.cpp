@@ -12,27 +12,27 @@ namespace {
 
 // From https://github.com/tensorflow/examples/blob/master/lite/examples/image_segmentation/ios/ImageSegmentation/ImageSegmentator.swift
 std::vector<QRgb> legendColorList = {
-    0xFFB300, // Vivid Yellow
-    0x803E75, // Strong Purple
-    0xFF6800, // Vivid Orange
-    0xA6BDD7, // Very Light Blue
-    0xC10020, // Vivid Red
-    0xCEA262, // Grayish Yellow
-    0x817066, // Medium Gray
-    0x007D34, // Vivid Green
-    0xF6768E, // Strong Purplish Pink
-    0x00538A, // Strong Blue
-    0xFF7A5C, // Strong Yellowish Pink
-    0x53377A, // Strong Violet
-    0xFF8E00, // Vivid Orange Yellow
-    0xB32851, // Strong Purplish Red
-    0xF4C800, // Vivid Greenish Yellow
-    0x7F180D, // Strong Reddish Brown
-    0x93AA00, // Vivid Yellowish Green
-    0x593315, // Deep Yellowish Brown
-    0xF13A13, // Vivid Reddish Orange
-    0x232C16, // Dark Olive Green
-    0x00A1C2, // Vivid Blue
+    0xFFFFB300, // Vivid Yellow
+    0xFF803E75, // Strong Purple
+    0xFFFF6800, // Vivid Orange
+    0xFFA6BDD7, // Very Light Blue
+    0xFFC10020, // Vivid Red
+    0xFFCEA262, // Grayish Yellow
+    0xFF817066, // Medium Gray
+    0xFF007D34, // Vivid Green
+    0xFFF6768E, // Strong Purplish Pink
+    0xFF00538A, // Strong Blue
+    0xFFFF7A5C, // Strong Yellowish Pink
+    0xFF53377A, // Strong Violet
+    0xFFFF8E00, // Vivid Orange Yellow
+    0xFFB32851, // Strong Purplish Red
+    0xFFF4C800, // Vivid Greenish Yellow
+    0xFF7F180D, // Strong Reddish Brown
+    0xFF93AA00, // Vivid Yellowish Green
+    0xFF593315, // Deep Yellowish Brown
+    0xFFF13A13, // Vivid Reddish Orange
+    0xFF232C16, // Dark Olive Green
+    0xFF00A1C2, // Vivid Blue
 };
 
 } // namespace
@@ -126,6 +126,7 @@ void MainWindow::loadImage(const QImage &image) {
         for (int x = 0; x < inputWidth; ++x) {
             const int classCount = 21;
             int index = std::max_element(outputData, outputData + classCount) - outputData;
+            qDebug() << index;
             outputData += classCount;
             outputImage.setPixel(x, y, legendColorList.at(index));
         }
