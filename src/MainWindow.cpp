@@ -61,10 +61,10 @@ MainWindow::MainWindow() {
     // Load model
     {
         auto modelPath = QApplication::applicationDirPath() + "/resources/deeplabv3_257_mv_gpu.tflite";
-        auto model = tflite::FlatBufferModel::BuildFromFile(modelPath.toUtf8().data());
+        _model = tflite::FlatBufferModel::BuildFromFile(modelPath.toUtf8().data());
 
         tflite::ops::builtin::BuiltinOpResolver resolver;
-        tflite::InterpreterBuilder(*model.get(), resolver)(&_interpreter);
+        tflite::InterpreterBuilder(*_model, resolver)(&_interpreter);
 
         if (_interpreter->AllocateTensors() != kTfLiteOk) {
             qDebug() << "Error AllocateTensors";
