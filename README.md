@@ -1,5 +1,5 @@
 # TFLiteSegmentationQt
-Run TensorFlow Lite image segmentation in Qt desktop app
+Run TensorFlow Lite image segmentation in Qt desktop app (currenly for Mac only)
 
 ![image](screenshot.png)
 
