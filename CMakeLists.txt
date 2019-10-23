@@ -18,7 +18,11 @@ FILE(GLOB_RECURSE SOURCES "src/*.cpp")
 FILE(GLOB_RECURSE HEADERS "src/*.hpp")
 
 add_executable(${PROJECT_NAME} ${SOURCES} ${HEADERS})
-
 target_link_libraries(${PROJECT_NAME} Qt5::Widgets -ltensorflow-lite)
 
 file(INSTALL ${CMAKE_CURRENT_SOURCE_DIR}/resources DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+
+FILE(GLOB_RECURSE LABEL_IMAGE_SOURCES "label_image/*.cc" "label_image/*.h")
+
+add_executable(label_image ${LABEL_IMAGE_SOURCES})
+target_link_libraries(label_image -ltensorflow-lite)
