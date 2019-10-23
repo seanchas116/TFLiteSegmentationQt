@@ -127,7 +127,6 @@ void MainWindow::loadImage(const QImage &image) {
         for (int x = 0; x < inputWidth; ++x) {
             const int classCount = 21;
             int index = std::max_element(outputData, outputData + classCount) - outputData;
-            qDebug() << index;
             outputData += classCount;
             outputImage.setPixel(x, y, legendColorList.at(index));
         }
