@@ -13,7 +13,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ==============================================================================*/
 
-#include "tensorflow/lite/examples/label_image/label_image.h"
+#include "label_image.h"
 
 #include <fcntl.h>     // NOLINT(build/include_order)
 #include <getopt.h>    // NOLINT(build/include_order)
