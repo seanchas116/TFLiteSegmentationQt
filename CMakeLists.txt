@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.15)
+cmake_minimum_required(VERSION 3.14)
 project(tflite-qt-app)
 
 # Qt
@@ -12,6 +12,9 @@ include_directories("vendor/tensorflow-lite/include")
 
 if(APPLE)
     link_directories("vendor/tensorflow-lite/osx_x86_64/lib")
+endif()
+if(WIN32 AND NOT MSVC)
+    link_directories("vendor/tensorflow-lite/mingw73_x86_64/lib")
 endif()
 
 FILE(GLOB_RECURSE SOURCES "src/*.cpp")

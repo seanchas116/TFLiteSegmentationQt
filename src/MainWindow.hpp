@@ -1,5 +1,6 @@
 #pragma once
 #include <QMainWindow>
+#include <memory>
 
 namespace tflite {
 class FlatBufferModel;
