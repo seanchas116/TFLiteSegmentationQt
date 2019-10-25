@@ -13,6 +13,7 @@ This repo already includes tensorflow-lite build (v2.0.0), but if you want to us
 
 * Clone [tensorflow repo](https://github.com/tensorflow/tensorflow)
 * Build tensorflow-lite for desktop
+  * If you are using Windows, use MSYS2
 
 ```
 cd path/to/tensorflow
